@@ -1,7 +1,6 @@
-Assumptions
-====================================================================================
+# Assumptions
 
-Endpoints
+## Endpoints
 
 * There is no security on the endpoints, and anyone will get full access to anyone.
 * There is "v1" in the url to simulate versioning of api. There are many ways to do
@@ -17,7 +16,7 @@ technically slower, but it is easier to understand semantically.
 * For pretend security reasons, the endpoints only send relevant information back,
 and not just what comes from the database.
 
-Database
+## Database
 
 * The project is configured to work locally as easily as possible, and is memory by
 default.
@@ -29,7 +28,7 @@ and manages transformation of entities so I only need to deal with POCO.
 * Optimistic concurrency is easiest when using EF to handle the point deduction
 scenario.
 
-Architecture
+## Architecture
 
 * The architecture is minimalist, but I'm separating controller from DB access via
 the LoyaltyManager. The LoyaltyManager is responsible for trying to apply the
@@ -39,26 +38,38 @@ the controllers asks.
 for any validation on the database. It then catches the default exceptions and
 returns status codes (OK, BadRequest, NotFound).
 
-Unit tests
+## Unit tests
 
 * I added a few tests on the loyalty manager via an in-memory database. There are
 more tests I would've loved to add with more time, like a functional test for
 concurrently adding/subtracting points to ensure concurrency is accurate.
 * The tests were run only via VS2017.
 
+## What's missing for production
+* There could be local, dev (on cloud), ppe/test and production environments.
+* Design a story around deployment, with tests and schedule for deployment to
+production.
+* Security
+* Separate database, and revisit scaling. It seems we care about writing very
+often for transactions, but listing all users isn't very important. We could have
+a configuration to store users and transactions on separate databases depending
+on users.
+* Make the endpoints async. Asp.Net uses threads to answer each call concurrently.
+However, async tasks consumes much less resources, as they resuse threads while
+they are waiting on something. This allows much cheaper scalability.
+* Better unit test coverage, functional tests for concurrency and stress test.
 
 
-Running the project
-====================================================================================
+# Running the project
 
 Tested on Windows, with VS2017 (latest update) and .Net Core.
 
-With VS (if you already have VS2017)
+## With VS (if you already have VS2017)
 1. Open ButtonChallenge.sln
 2. F5 to run the project
 3. The tests work with VS
 
-With .Net Core
+## With .Net Core
 0. Install .Net Core from https://www.microsoft.com/net/learn/get-started/windows
 1. Open the command line and "cd" to ButtonChallenge.csproj
 	cd ButtonChallenge/ButtonChallenge.csproj
@@ -67,41 +78,37 @@ With .Net Core
 
 
 
-The endpoints
-====================================================================================
+# The endpoints
 
 Use your favorite REST client (tried with Postman).
 The default URL is different between .Net Core and VS
 VS: http://localhost:55234/
 dotnet: http://localhost:55235/
 
-GET api/v1/users
+## GET api/v1/users
 List all users.
 
-POST api/v1/users
+## POST api/v1/users
 Create a new user
 
-GET api/v1/users/5
+## GET api/v1/users/5
 Get a specific user
 
-GET api/v1/users/5/transfers
+## GET api/v1/users/5/transfers
 Get all transfers for a user ID
 
-POST api/v1/users/5/transfers
+## POST api/v1/users/5/transfers
 Add a transfer to a user.
 
-Examples
+## Examples
 
-To list all users via Visual Studio, I went to:
-GET http://localhost:55234/api/v1/users
+To list all users via Visual Studio, I went to: GET http://localhost:55234/api/v1/users
 
-To list all users via command line (dotnet run), I went to:
-GET http://localhost:55235/api/v1/users
+To list all users via command line (dotnet run), I went to: GET http://localhost:55235/api/v1/users
 
 
 
-The database
-====================================================================================
+# The database
 
 I configured the project to use a runtime database to make it work out of the box.
 This can be modified to run a real database with a few changes.
