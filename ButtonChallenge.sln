@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ButtonChallenge", "ButtonChallenge\ButtonChallenge.csproj", "{07E35659-6E72-4040-B5F7-40F8069C2AA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B8EFFD08-82E2-464B-895A-546B3E9DD86E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B8EFFD08-82E2-464B-895A-546B3E9DD86E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E0DC9B4-B7D7-44AC-954C-AB874E24528B}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

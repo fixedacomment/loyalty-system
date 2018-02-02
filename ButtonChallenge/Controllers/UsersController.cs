@@ -114,11 +114,11 @@ namespace ButtonChallenge.Controllers
         /// <returns>Information for the new user</returns>
         // POST api/v1/users
         [HttpPost]
-        public object PostUser(JObject userInfo)
+        public object PostUser([FromBody] JObject userInfo)
         {
             if(!IsValidString(userInfo["firstName"])
                 || !IsValidString(userInfo["lastName"])
-                || !IsValidString(userInfo["email"]))
+                || !IsValidEmail(userInfo["email"]))
             {
                 return BadRequest("Invalid information for a new user.");
             }
@@ -147,11 +147,11 @@ namespace ButtonChallenge.Controllers
         [HttpPost("{id}/transfers")]
         public object PostTransfer(long id, [FromBody] JObject transferInfo)
         {
-            if (!IsValidInt(transferInfo["points"]))
+            if (!IsValidInt(transferInfo["amount"]))
             {
                 return BadRequest("Invalid information for a new transaction.");
             }
-            int transferAmount = transferInfo["points"].ToObject<int>();
+            int transferAmount = transferInfo["amount"].ToObject<int>();
             try
             {
                 var transfer = _database.TransferPoints(id, transferAmount);
@@ -189,7 +189,7 @@ namespace ButtonChallenge.Controllers
         /// <returns>True if it is a string</returns>
         private bool IsValidString(JToken value)
         {
-            return value != null && value.Type == JTokenType.String;
+            return value != null && value.Type == JTokenType.String && !string.IsNullOrWhiteSpace(value.ToString());
         }
 
         /// <summary>
